@@ -1,3 +1,4 @@
+import { NewsState } from './containers/Dashboard/types';
 import { combineReducers, Dispatch, Action, AnyAction } from 'redux'
 import { RouterState, connectRouter } from 'connected-react-router';
 import { all, fork } from 'redux-saga/effects';
@@ -6,6 +7,8 @@ import { AuthState } from './containers/Auth/types';
 import { authReducer } from './containers/Auth/reducers';
 import { Reducer } from 'typesafe-actions';
 import { authSaga } from './containers/Auth/saga';
+import { newsReducer } from './containers/Dashboard/reducers';
+import { newsSaga } from './containers/Dashboard/saga';
 
 // The top-level state object.
 //
@@ -13,6 +16,7 @@ import { authSaga } from './containers/Auth/saga';
 // so we can ignore them here.
 export interface ApplicationState {
   auth: AuthState;
+  news:NewsState;
   router: RouterState<History.PoorMansUnknown>
 }
 
@@ -27,6 +31,7 @@ export interface ConnectedReduxProps<A extends Action = AnyAction> {
 export const createRootReducer = (history: History) =>
   combineReducers({
     auth: authReducer as Reducer<AuthState, AnyAction>,
+    news:newsReducer as Reducer<NewsState,AnyAction>,
     router: connectRouter(history)
   })
 
@@ -35,4 +40,5 @@ export const createRootReducer = (history: History) =>
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
 export function* rootSaga() {
   yield all([fork(authSaga)])
+  yield all([fork(newsSaga)])
 }

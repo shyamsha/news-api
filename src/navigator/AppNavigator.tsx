@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router";
 import { connect } from "react-redux";
 import { RouteEnums } from "./RouteEnums";
 import Login from "../containers/Auth/Login/Login";
+import Dashboard from "../containers/Dashboard/Dashboard/Dashboard";
 // import { ApplicationState } from "../store";
 
 
@@ -32,7 +33,7 @@ class AppNavigator extends Component<any, any> {
   App: FC = () => (
     <Fragment>
       <Switch>
-        <Route path={`/`} component={() => <div>id</div>} exact />
+        <Route path={`/`} component={Dashboard} exact />
       </Switch>
     </Fragment>
   );
@@ -44,15 +45,14 @@ class AppNavigator extends Component<any, any> {
   //       alert("Internal Server Error");
   //       this.setState({hasError:true})
   //     }
-  
+
   //     return Promise.reject(error);
   //   });
   // }
 
   render() {
-    const { user } = this.props;
 
-    return user ? <this.App /> : <this.Auth />;
+    return <this.App />;
 
   }
 }
