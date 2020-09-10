@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import { Input, Card, Button } from "antd";
 import {
@@ -22,6 +22,38 @@ interface Props {
 }
 
 export default function NewsFeed(props: Props) {
+  let obj = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+  };
+
+  let [like, setLike] = useState(0);
+  let [id, setId] = useState(0);
+
+
+
+   const countLikes = (i: number) => {
+    setId(i);
+    setLike(like + 1);
+  };
+
+  for (let key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      // @ts-ignore
+      console.log(obj[id])
+      // @ts-ignore
+     obj[id] = like;
+    }
+  }
+
   const openNewInNewTab = (url: string) => {
     window.open(url, "_blank");
   };
@@ -29,6 +61,8 @@ export default function NewsFeed(props: Props) {
   if (props.loading) {
     return <Center>loading...</Center>;
   }
+  console.log("work",obj);
+
   return (
     <Fragment>
       <FilterHeader>
@@ -83,7 +117,7 @@ export default function NewsFeed(props: Props) {
         {props.news !== null &&
           props.news.articles.map((ele, i) => {
             return (
-              <div style={{ padding: "8px 12px" }}>
+              <div style={{ padding: "8px 12px" }} key={i}>
                 <Card
                   style={{ width: 300 }}
                   bodyStyle={{ height: "300px" }}
@@ -93,7 +127,9 @@ export default function NewsFeed(props: Props) {
                   }
                   actions={[
                     <Button type="link">Hide</Button>,
-                    <LikeTwoTone key="like" />,
+                    <Button type="link" onClick={() => countLikes(i)}>
+                      <LikeTwoTone key="like" /> {like}
+                    </Button>,
                   ]}
                 >
                   <div

@@ -4,7 +4,11 @@ import { connect } from "react-redux";
 import { newsRequest, categoryRequest, newsSearchRequest } from "../actions";
 import { News, NewsParams } from "../types";
 import { Tabs } from "antd";
-import { AppleOutlined, AndroidOutlined } from "@ant-design/icons";
+import {
+  DollarCircleTwoTone,
+  PlaySquareTwoTone,
+  TabletTwoTone,
+} from "@ant-design/icons";
 import NewsFeed from "../views/NewsFeed";
 
 const { TabPane } = Tabs;
@@ -163,7 +167,7 @@ class Dashboard extends Component<AllProps, State> {
             <TabPane
               tab={
                 <span>
-                  <AppleOutlined />
+                  <DollarCircleTwoTone />
                   Business
                 </span>
               }
@@ -182,7 +186,7 @@ class Dashboard extends Component<AllProps, State> {
             <TabPane
               tab={
                 <span>
-                  <AndroidOutlined />
+                  <PlaySquareTwoTone />
                   Sports
                 </span>
               }
@@ -201,7 +205,7 @@ class Dashboard extends Component<AllProps, State> {
             <TabPane
               tab={
                 <span>
-                  <AppleOutlined />
+                  <TabletTwoTone />
                   Entertainment
                 </span>
               }
