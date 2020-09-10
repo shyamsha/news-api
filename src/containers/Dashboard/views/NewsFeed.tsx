@@ -4,7 +4,7 @@ import { Input, Card, Button } from "antd";
 import {
   LeftSquareOutlined,
   RightSquareOutlined,
-  EditOutlined,
+  LikeTwoTone,
 } from "@ant-design/icons";
 import { News } from "../types";
 
@@ -14,8 +14,11 @@ const { Search } = Input;
 interface Props {
   loading: boolean;
   news: News;
-  searchQuery: (e: { target: { value: string } }) => void;
+  searchQuery: (e: string) => void;
   search: string;
+  pageNext: () => void;
+  pagePrev: () => void;
+  page: number;
 }
 
 export default function NewsFeed(props: Props) {
@@ -30,16 +33,41 @@ export default function NewsFeed(props: Props) {
     <Fragment>
       <FilterHeader>
         <CustomPagination>
+          <span
+            style={{
+              paddingRight: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Total Result: {props.news !== null && props.news.totalResults}
+          </span>
           <Space>
             <LeftSquareOutlined
-              style={{ fontSize: "32px", color: "#1890ff", cursor: "pointer" }}
-              onClick={() => null}
+              style={{
+                fontSize: "32px",
+                color: "#1890ff",
+                cursor: props.page > 1 ? `pointer` : `not-allowed`,
+              }}
+              onClick={() => (props.page > 1 ? props.pagePrev() : null)}
             />
           </Space>
           <div>
             <RightSquareOutlined
-              style={{ fontSize: "32px", color: "#1890ff", cursor: "pointer" }}
-              onClick={() => null}
+              style={{
+                fontSize: "32px",
+                color: "#1890ff",
+                cursor:
+                  props.news !== null && props.news.totalResults > 0
+                    ? "pointer"
+                    : "not-allowed",
+              }}
+              onClick={() =>
+                props.news !== null && props.news.totalResults > 0
+                  ? props.pageNext()
+                  : null
+              }
             />
           </div>
         </CustomPagination>
@@ -47,32 +75,40 @@ export default function NewsFeed(props: Props) {
           <Search
             placeholder="search for news"
             enterButton
-            onChange={e => props.searchQuery(e)}
+            onSearch={e => props.searchQuery(e)}
           />
         </div>
       </FilterHeader>
-      <div style={{ padding: "8px" }}>
+      <Container style={{}}>
         {props.news !== null &&
           props.news.articles.map((ele, i) => {
             return (
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => openNewInNewTab(ele.url)}
-              >
+              <div style={{ padding: "8px 12px" }}>
                 <Card
                   style={{ width: 300 }}
-                  cover={<img alt="example" src={ele.urlToImage} />}
+                  bodyStyle={{ height: "300px" }}
+                  hoverable={true}
+                  cover={
+                    <img alt="example" src={ele.urlToImage} height="200px" />
+                  }
                   actions={[
                     <Button type="link">Hide</Button>,
-                    <EditOutlined key="edit" />,
+                    <LikeTwoTone key="like" />,
                   ]}
                 >
-                  <Meta title={ele.title} description={ele.description} />
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => openNewInNewTab(ele.url)}
+                  >
+                    <Meta title={ele.title} description={ele.description} />
+                  </div>
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "flex-end",
                       padding: "4px 0",
+                      fontWeight: 700,
+                      wordBreak: "break-word",
                     }}
                   >
                     {ele.author}
@@ -84,7 +120,7 @@ export default function NewsFeed(props: Props) {
               </div>
             );
           })}
-      </div>
+      </Container>
     </Fragment>
   );
 }
@@ -110,4 +146,13 @@ const Center = styled.div`
   justify-content: center;
   align-content: stretch;
   align-items: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  align-self: auto;
 `;

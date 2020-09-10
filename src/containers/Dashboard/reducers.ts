@@ -4,6 +4,7 @@ import { NewsState, DashboardActionTypes } from "./types";
 const initialState: NewsState = {
   loading: false,
   news: null,
+  category: null,
   errors: {
     news: undefined,
   },
@@ -30,6 +31,22 @@ const reducer: Reducer<NewsState, A> = (
         loading: false,
         errors: { ...state.errors, news: action.payload },
       };
+      case DashboardActionTypes.NEWS_SEARCH_REQUEST:
+        return {
+          ...state,
+          loading: true,
+          errors: { ...state.errors, news: undefined },
+        };
+      case DashboardActionTypes.NEWS_SEARCH_SUCCESS:
+        return { ...state, loading: false, news: action.payload };
+      case DashboardActionTypes.NEWS_SEARCH_ERROR:
+        return {
+          ...state,
+          loading: false,
+          errors: { ...state.errors, news: action.payload },
+        };
+    case DashboardActionTypes.CATEGORY_REQUEST:
+      return { ...state, category: action.payload.category };
 
     default:
       return state;

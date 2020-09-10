@@ -36,3 +36,8 @@ export const news = (params: NewsParams) => {
   const url = `${API_ENDPOINT}?country=in&apiKey=6dcadf0aa2d24d68b173ae1597dacfd3&category=${params.category}&pageSize=${params.pageSize}&page=${params.page}`;
   return API.get(url);
 };
+
+export const newsSearch = (params: NewsParams) => {
+  const url = `${API_ENDPOINT}?country=in&apiKey=6dcadf0aa2d24d68b173ae1597dacfd3&category=${params.category}&pageSize=${params.pageSize}&page=${params.page}&q=${params.q}`;
+  return API.get(url);
+};
