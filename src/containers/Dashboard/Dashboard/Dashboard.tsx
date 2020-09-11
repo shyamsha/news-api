@@ -39,7 +39,7 @@ interface State {
 }
 class Dashboard extends Component<AllProps, State> {
   state: State = {
-    pageSize: 10,
+    pageSize: 12,
     page: 1,
     category: ["business", "sports", "entertainment"],
     search: "",

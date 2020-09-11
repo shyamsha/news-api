@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
-import { Input, Card, Button } from "antd";
+import { Input, Card, Button, Spin } from "antd";
 import {
   LeftSquareOutlined,
   RightSquareOutlined,
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default function NewsFeed(props: Props) {
-  let obj = {
+  let obj: any = {
     0: 0,
     1: 0,
     2: 0,
@@ -37,32 +37,32 @@ export default function NewsFeed(props: Props) {
 
   let [like, setLike] = useState(0);
   let [id, setId] = useState(0);
-
-
-
-   const countLikes = (i: number) => {
-    setId(i);
-    setLike(like + 1);
+  const [visible, setIsVisible] = useState(false);
+  const countLikes = (id: number) => {
+    setId(id);
+    setLike(like+1)
   };
 
   for (let key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      // @ts-ignore
-      console.log(obj[id])
-      // @ts-ignore
-     obj[id] = like;
+     if(id===Number(key)){
+       obj[id] = like;
+     }
     }
   }
+
+  const hideNews = (i:number) => {
+    setId(i)
+    setIsVisible(true);
+  };
 
   const openNewInNewTab = (url: string) => {
     window.open(url, "_blank");
   };
 
   if (props.loading) {
-    return <Center>loading...</Center>;
+    return <Center><Spin style={{top:"50%"}}/></Center>;
   }
-  console.log("work",obj);
-
   return (
     <Fragment>
       <FilterHeader>
@@ -98,7 +98,7 @@ export default function NewsFeed(props: Props) {
                     : "not-allowed",
               }}
               onClick={() =>
-                props.news !== null && props.news.totalResults > 0
+                props.news !== null && props.news.totalResults > 10
                   ? props.pageNext()
                   : null
               }
@@ -123,12 +123,15 @@ export default function NewsFeed(props: Props) {
                   bodyStyle={{ height: "300px" }}
                   hoverable={true}
                   cover={
-                    <img alt="example" src={ele.urlToImage} height="200px" />
+                    <img alt="media" src={ele.urlToImage} height="200px" />
                   }
                   actions={[
-                    <Button type="link">Hide</Button>,
+                    <Button type="link" onClick={()=>hideNews(i)}>
+                      Hide
+                    </Button>,
                     <Button type="link" onClick={() => countLikes(i)}>
-                      <LikeTwoTone key="like" /> {like}
+                      <LikeTwoTone key="like" />
+                      {/* {like} */}
                     </Button>,
                   ]}
                 >
@@ -165,6 +168,7 @@ const FilterHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap:wrap;
 `;
 
 const CustomPagination = styled.div`
