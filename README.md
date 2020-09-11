@@ -1,4 +1,4 @@
-# React Typescript Starter
+# React Typescript
 
 ## Tech Stack
 
